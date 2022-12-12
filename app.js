@@ -65,10 +65,15 @@ passport.use(
       if (!user) {
         return done(null, false, { message: 'Incorrect username' });
       }
-      if (user.password !== password) {
-        return done(null, false, { message: 'Incorrect password' });
-      }
-      return done(null, user);
+      bcrypt.compare(password, user.pasword, (err, res) => {
+        if (res) {
+          console.log("made it here")
+          return done(null, user);
+        } else {
+          console.log("failed")
+          return done(null, false, { message: 'Incorrect Password' });
+        }
+      });
     });
   })
 );
