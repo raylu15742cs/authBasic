@@ -38,13 +38,15 @@ app.get("/", (req, res) => {
 app.get('/sign-up', (req, res) => res.render('sign-up-form'));
 
 app.post('/sign-up', (req, res, next) => {
-  const user = new User({
-    username: req.body.username,
-    password: bcrypt.hash(req.body.password, 10, (err, hashedPassword)=> {
-        if(err) {
+    bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
+        if( err) {
             return next(err)
         }
-    }),
+        password =  hashedPassword
+    })
+  const user = new User({
+    username: req.body.username,
+    password: password,
   }).save((err) => {
     if (err) {
       return next(err);
