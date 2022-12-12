@@ -42,17 +42,16 @@ app.post('/sign-up', (req, res, next) => {
         if( err) {
             return next(err)
         }
-        password =  hashedPassword
+        const user = new User({
+          username: req.body.username,
+          password: hashedPassword,
+        }).save((err) => {
+          if (err) {
+            return next(err);
+          }
+          res.redirect('/');
+        });
     })
-  const user = new User({
-    username: req.body.username,
-    password: password,
-  }).save((err) => {
-    if (err) {
-      return next(err);
-    }
-    res.redirect('/');
-  });
 });
 app.listen(3000, () => console.log('app listening on port 3000!'));
 
